@@ -13,9 +13,7 @@ public interface AuthenticationService {
 
     TokenResponse getRefreshToken(HttpServletRequest request);
 
-    boolean verifyAccount(String token);
 
     String verifyEmailAndSetPassword(RegisterStep2Request request);
 
-    public Long getUserIdFromToken(String token);
 }
