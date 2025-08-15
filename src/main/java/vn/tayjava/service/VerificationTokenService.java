@@ -1,5 +1,6 @@
 package vn.tayjava.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ public class VerificationTokenService {
         return verificationTokenRepository.findUserByToken(token);
    }
 
+   @Transactional
    public void deleteByToken(String token) {
         verificationTokenRepository.deleteByToken(token);
    }

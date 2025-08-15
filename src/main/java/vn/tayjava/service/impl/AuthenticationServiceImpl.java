@@ -105,61 +105,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-//    public String verifyAccount(String token) {
-//        Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
-//        if(verificationToken.isEmpty() || verificationToken.get().getExpiryTime().isBefore(LocalDateTime.now())) {
-//            return "Token không hợp lệ hoặc đã hết hạn";
-//
-//        }
-//
-//        UserEntity user = verificationToken.get().getUser();
-//        user.setStatus(String.valueOf(UserStatus.ACTIVE).toLowerCase());
-//        return "Tài khoản đã được kích hoạt";
-//    }
-
-    public boolean verifyAccount(String token) {
-        Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
-        if(verificationToken.isEmpty() || verificationToken.get().getExpiryTime().isBefore(LocalDateTime.now())) {
-            return false;
-        }else {
-            UserEntity user = verificationToken.get().getUser();
-            user.setStatus(String.valueOf(UserStatus.ACTIVE).toLowerCase());
-            return true;
-        }
-    }
-
-
-    public Long getUserIdFromToken(String token) {
-        Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
-
-        if (verificationToken.isPresent()) {
-            VerificationToken tokenEntity = verificationToken.get();
-            // Kiểm tra hạn sử dụng
-            if (tokenEntity.getExpiryTime().isAfter(LocalDateTime.now())) {
-                return tokenEntity.getUser().getId(); // Token hợp lệ → trả về userId
-            }
-        }
-        return null; // Token không tồn tại hoặc hết hạn
-    }
-
-
-
-//    @Override
-//    public String verifyEmailAndSetPassword(RegisterStep2Request request) {
-//        UserEntity user = userRepository.findById(request.getUserId()).orElseThrow(() -> new IllegalArgumentException("User not found"));
-//        if(!user.getStatus().equalsIgnoreCase("none")) {
-//            return "Tài khoản đã kích hoạt hoặc không hợp lệ";
-//        }
-//
-//        if(!request.getPassword().equals(request.getConfirmPassword())) {
-//            return "Password mismatch";
-//        }
-//
-//        user.setPassword(passwordEncoder.encode(request.getPassword()));
-//        user.setStatus(UserStatus.ACTIVE.toString());
-//        userRepository.save(user);
-//        return "password saved";
-//    }
 
     @Override
     public String verifyEmailAndSetPassword(RegisterStep2Request request) {
@@ -171,17 +116,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return "invalid token";
         }
 
+        if (token.get().getExpiryTime().isBefore(LocalDateTime.now())) {
+            return "token expired";
+        }
 
         UserEntity user = verificationTokenService.findUserByToken(request.getToken()).get();
         log.info(user.getStatus());
 
-
         if(user.getStatus().equalsIgnoreCase(String.valueOf(UserStatus.ACTIVE))) {
             return "user already enabled";
-        }
-
-        if (token.get().getExpiryTime().isBefore(LocalDateTime.now())) {
-            return "token expired";
         }
 
         if(!request.getPassword().equals(request.getConfirmPassword())) {
