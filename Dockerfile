@@ -1,9 +1,7 @@
 FROM openjdk:17
 
-ARG JAR_FILE=target/*.jar
+COPY target/triky-be-0.0.1-SNAPSHOT.jar backend-service.jar
 
-COPY ${JAR_FILE} backend-service.jar
-
-ENTRYPOINT ["java", "-jar", "backend-service.jar"]
+ENTRYPOINT ["java", "-jar", "/backend-service.jar"]
 
 EXPOSE 8080
