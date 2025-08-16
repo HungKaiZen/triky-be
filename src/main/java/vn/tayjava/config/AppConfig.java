@@ -27,6 +27,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import vn.tayjava.service.UserServiceDetail;
 
+import java.util.List;
+
 @Configuration
 @RequiredArgsConstructor
 public class AppConfig implements WebMvcConfigurer {
@@ -66,21 +68,36 @@ public class AppConfig implements WebMvcConfigurer {
                 .requestMatchers("/actuator/**", "/v3/**", "/webjars/**", "/swagger-ui*/*swagger-initializer.js", "/swagger-ui*/**", "/favicon.ico");
     }
 
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(@NonNull CorsRegistry registry) {
+//                registry.addMapping("/**")
+//                        .allowedOrigins("https://triky-fe.onrender.com")
+//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allowed HTTP methods
+//                        .allowedHeaders("*") // Allowed request headers
+//                        .allowCredentials(false)
+//                        .maxAge(3600);
+//            }
+//        };
+//    }
+
+
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(@NonNull CorsRegistry registry) {
-                registry.addMapping("/**")
-//                        .allowedOrigins("http://localhost:8500")
-//                        .allowedOrigins("http://127.0.0.1:5500", "http://localhost:5500")
-                        .allowedOrigins("*") // tạm thời cho phép mọi domain
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allowed HTTP methods
-                        .allowedHeaders("*") // Allowed request headers
-                        .allowCredentials(false)
-                        .maxAge(3600);
-            }
-        };
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of(
+                "https://triky-fe.onrender.com", // 👈 domain FE thật
+                "http://127.0.0.1:5500"
+        ));
+        configuration.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
 
