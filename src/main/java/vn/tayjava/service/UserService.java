@@ -2,6 +2,7 @@ package vn.tayjava.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 import vn.tayjava.controller.request.UserCreationRequest;
 import vn.tayjava.controller.request.UserPasswordRequest;
 import vn.tayjava.controller.request.UserUpdateRequest;
@@ -28,6 +29,7 @@ public interface UserService {
     void updateUserStatus(Long id, String status);
 
     void updateUserType(Long id, String type);
+
 
     void changePassword(UserPasswordRequest req);
 

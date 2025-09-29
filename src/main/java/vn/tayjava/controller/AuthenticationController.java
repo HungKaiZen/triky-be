@@ -14,11 +14,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import vn.tayjava.controller.request.*;
 import vn.tayjava.controller.response.DataResponse;
 import vn.tayjava.controller.response.TokenResponse;
 import vn.tayjava.controller.response.UserResponse;
 import vn.tayjava.service.AuthenticationService;
+import vn.tayjava.service.UserAvatarService;
 import vn.tayjava.service.UserService;
 
 import java.io.IOException;
@@ -33,6 +35,7 @@ import java.util.Map;
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
     private final UserService userService;
+    private final UserAvatarService userAvatarService;
 
     @Operation(summary = "Access token", description = "Get access token and refresh token by username and password")
     @PostMapping("/access")
@@ -92,7 +95,6 @@ public class AuthenticationController {
 
     @Operation(summary = "Get user detail", description = "API retrieve user detail by id from database")
     @GetMapping("/{userId}")
-    @PreAuthorize("hasAuthority('user')")
     public DataResponse<?> getUsers(@PathVariable @Min(value = 1, message = "userId must be greater than 0") Long userId) {
         log.info("Get user detail by id: {}", userId);
 
@@ -101,6 +103,7 @@ public class AuthenticationController {
         return new DataResponse<>(HttpStatus.OK.value(), "User detail", userResponse);
     }
 
+    @Operation(summary = "Verify email and set password", description = "API verify email and set password to db")
     @PostMapping("/verify-and-set-password")
     public DataResponse<?> verifyEmailAndSetPassword(@RequestBody RegisterStep2Request request) {
        log.info("Verify email and password request");
@@ -108,7 +111,29 @@ public class AuthenticationController {
     }
 
 
-
+//    @GetMapping("/{userId}/avatar/all")
+//    public DataResponse<?> getUserAvatars(@PathVariable @Min(value = 1, message = "userId must be greater than 0") Long userId) {
+//        log.info("Get user avatars: {}", userId);
+//        return new DataResponse<>(HttpStatus.OK.value(), "User avatars", userAvatarService.getUserAvatars(userId));
+//    }
+//
+//    @PostMapping("/{userId}/avatar/upload")
+//    public DataResponse<?> uploadUserAvatar(@PathVariable Long userId, @RequestParam MultipartFile file) {
+//        log.info("Upload user avatar: {}", userId);
+//        try {
+//            return new DataResponse<>(HttpStatus.OK.value(), "Upload success", userAvatarService.uploadAvatar(userId, file).getAvatarUrl());
+//        }catch (Exception e) {
+//            return new DataResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Upload failed");
+//        }
+//    }
+//
+//    @PutMapping("/{userId}/avatar/select")
+//    public DataResponse<?> selectUserAvatar(@PathVariable Long userId, @RequestBody Map<String, String> body) {
+//        log.info("Select user avatar: {}", userId);
+//        String avatarUrl = body.get("avatarUrl");
+//        userAvatarService.selectAvatar(userId, avatarUrl);
+//        return new DataResponse<>(HttpStatus.OK.value(), "Avatar selected successfully", avatarUrl);
+//    }
 
 
 }

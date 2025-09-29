@@ -53,6 +53,14 @@ public class CustomizeRequestFilter extends OncePerRequestFilter {
             return;
         }
 
+        String pathRequest = request.getRequestURI();
+
+        // Bỏ qua request tới thư mục avatar / uploads
+        if (pathRequest.startsWith("/avatars/") || pathRequest.startsWith("/uploads/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
 
         // get token
         final String authHeader = request.getHeader("Authorization");

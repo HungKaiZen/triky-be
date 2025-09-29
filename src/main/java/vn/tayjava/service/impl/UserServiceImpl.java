@@ -8,6 +8,7 @@ import org.springframework.data.domain.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import vn.tayjava.common.Gender;
 import vn.tayjava.common.UserStatus;
 import vn.tayjava.common.UserType;
@@ -27,11 +28,17 @@ import vn.tayjava.service.UserService;
 import vn.tayjava.service.VerificationTokenService;
 import vn.tayjava.util.DateUtil;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -99,16 +106,20 @@ public class UserServiceImpl implements UserService {
         log.info("Get user detail by id: {}", id);
 
         UserEntity userEntity = getUserEntityById(id);
+        List<AddressEntity> addressEntities = addressRepository.findByUserId(userEntity.getId());
 
         return UserResponse.builder()
                 .id(id)
                 .firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName())
-                .gender(Gender.valueOf(userEntity.getGender()))
+                .gender(userEntity.getGender())
                 .birthday(String.valueOf(userEntity.getBirthday()))
                 .username(userEntity.getUsername())
                 .email(userEntity.getEmail())
                 .phone(userEntity.getPhone())
+                .avatarUrl(userEntity.getAvatarUrl())
+                .created(userEntity.getCreatedAt())
+                .addresses(addressEntities)
                 .build();
     }
 
@@ -234,6 +245,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userEntity);
     }
 
+
     /*
     * Change password
     * encoder
@@ -284,7 +296,7 @@ public class UserServiceImpl implements UserService {
                 .id(userEntity.getId())
                 .firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName())
-                .gender(Gender.valueOf(userEntity.getGender()))
+                .gender(userEntity.getGender())
                 .birthday(String.valueOf(userEntity.getBirthday()))
                 .username(userEntity.getUsername())
                 .email(userEntity.getEmail())

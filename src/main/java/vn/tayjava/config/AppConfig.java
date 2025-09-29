@@ -49,7 +49,7 @@ public class AppConfig implements WebMvcConfigurer {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/auth/**", "/avatars/**").permitAll()
+                        .requestMatchers("/auth/**", "/uploads/**").permitAll()
 
                         .anyRequest().authenticated())
 
@@ -103,8 +103,8 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/avatars/**")
-                .addResourceLocations("classpath:/static/avatars/");
+        registry.addResourceHandler("/uploads/**")
+                .addResourceLocations("file:E:/Workspace/Backend/hungjava/fullstack/triky/triky_be/src/main/resources/static/uploads/");
     }
 
 

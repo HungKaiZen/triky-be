@@ -31,7 +31,7 @@ public class MockupUserController {
         response.setEmail("admin@gmail.com");
         response.setBirthday(String.valueOf(new Date()));
         response.setPhone("0989123456");
-        response.setGender(Gender.MALE);
+        response.setGender(String.valueOf(Gender.MALE));
 
 
         UserResponse response2 = new UserResponse();
@@ -42,7 +42,7 @@ public class MockupUserController {
         response2.setEmail("admin@gmail.com");
         response2.setBirthday(String.valueOf(new Date()));
         response2.setPhone("0989123456");
-        response.setGender(Gender.MALE);
+        response.setGender(String.valueOf(Gender.MALE));
 
         List<UserResponse> users = Arrays.asList(response,response2);
         Map<String, Object> result = new LinkedHashMap<>();
@@ -65,7 +65,7 @@ public class MockupUserController {
         response.setEmail("admin@gmail.com");
         response.setBirthday(String.valueOf(new Date()));
         response.setPhone("0989123456");
-        response.setGender(Gender.MALE);
+        response.setGender(String.valueOf(Gender.MALE));
 
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("status", HttpStatus.OK.value());
