@@ -5,7 +5,7 @@ spring:
   devtools:
     add-properties: true
   datasource:
-    url: jdbc:mysql://mysql-2787bae0-tongahung-06c5.c.aivencloud.com:23545/defaultdb?useSSL=true&requireSSL=true&verifyServerCertificate=false&serverTimezone=UTC
+    url: jdbc:mysql://mysql-2787bae0-tongahung-06c5.c.aivencloud.com:23545/defaultdb?sslMode=REQUIRED&serverTimezone=UTC
     username: avnadmin
     password: AVNS_n0IJfNTD1HXSbjGFuC9
 
