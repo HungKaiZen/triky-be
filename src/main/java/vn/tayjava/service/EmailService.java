@@ -6,6 +6,7 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -22,6 +23,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class EmailService {
 
+    @Autowired
     private final JavaMailSender mailSender;
 
 
@@ -69,6 +71,7 @@ public class EmailService {
 //    }
 
     public void sendVerificationEmail(UserEntity user, String token) {
+        log.info("Email is sending ...");
 //        String verifyUrl = "http://localhost:8080/auth/verify?token=" + token;
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(user.getEmail());
