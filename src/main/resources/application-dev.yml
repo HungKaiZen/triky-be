@@ -5,17 +5,17 @@ spring:
   devtools:
     add-properties: true
   datasource:
-    url: jdbc:mysql://mysql-2787bae0-tongahung-06c5.c.aivencloud.com:23545/defaultdb?sslMode=REQUIRED&serverTimezone=UTC
-    username: avnadmin
-    password: AVNS_n0IJfNTD1HXSbjGFuC9
+#    url: jdbc:mysql://mysql-2787bae0-tongahung-06c5.c.aivencloud.com:23545/defaultdb?sslMode=REQUIRED&serverTimezone=UTC
+#    username: avnadmin
+#    password: AVNS_n0IJfNTD1HXSbjGFuC9
 #
 #    hikari:
 #      data-source-properties:
 #        sslMode: REQUIRED
 #        enabledTLSProtocols: TLSv1.2,TLSv1.3
-#    url: jdbc:mysql://localhost:3306/triky
-#    username: root
-#    password: 0801
+    url: jdbc:mysql://localhost:3306/triky
+    username: root
+    password: 0801
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
